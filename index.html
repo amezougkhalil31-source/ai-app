@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI VideoGen & Omni Studio Pro</title>
+    <style>
+        :root {
+            --bg-main: #07090e;
+            --bg-card: #0f172a;
+            --bg-hover: #1e293b;
+            --accent-color: #6366f1;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            --text-main: #f9fafb;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --success-color: #10b981;
+            --pro-color: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .mobile-frame {
+            width: 100%;
+            height: 100vh;
+            max-width: 450px;
+            max-height: 100vh;
+            background-color: var(--bg-card);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            border: none;
+            box-shadow: none;
+        }
+
+        @media (min-width: 768px) {
+            .mobile-frame {
+                height: 92vh;
+                max-height: 880px;
+                border-radius: 40px;
+                border: 2px solid var(--border-color);
+                box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9);
+            }
+            body {
+                background: radial-gradient(circle at center, #1e1b4b 0%, #07090e 100%);
+            }
+        }
+
+        /* نظام الإشعارات المنبثقة الحية */
+        #notificationToast {
+            position: absolute;
+            top: 55px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: rgba(15, 23, 42, 0.96);
+            border: 1px solid var(--accent-color);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 14px;
+            font-size: 11px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 300;
+            transition: all 0.4s ease;
+            opacity: 0;
+            pointer-events: none;
+            max-width: 90%;
+            text-align: left;
+        }
+
+        #notificationToast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .status-bar {
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: var(--text-muted);
+            background: rgba(0,0,0,0.3);
+        }
+
+        .app-header {
+            padding: 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(15, 23, 42, 0.98);
+        }
+
+        .app-header h1 {
+            font-size: 15px;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .privacy-link {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-decoration: none;
+            background: var(--bg-hover);
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .privacy-link:hover {
+            background: var(--accent-color);
+            color: #fff;
+        }
+
+        .tabs-nav {
+            display: flex;
+            gap: 8px;
+            padding: 10px 16px;
+            overflow-x: auto;
+            background: rgba(7, 9, 14, 0.6);
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        .tabs-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            background: var(--bg-hover);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--accent-color);
+            color: white;
+            border-color: transparent;
+        }
+
+        .app-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            scroll-behavior: smooth;
+        }
+
+        .app-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .app-content::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        .gift-banner {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .gift-banner h3 {
+            font-size: 13px;
+            color: var(--pro-color);
+            margin-bottom: 4px;
+            font-weight: 800;
+        }
+
+        .gift-banner p {
+            font-size: 10px;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .claim-gift-btn {
+            background: var(--pro-color);
+            color: #000;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .claim-gift-btn:active {
+            transform: scale(0.95);
+        }
+
+        .new-project-btn {
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+            margin-bottom: 16px;
+            transition: transform 0.1s;
+        }
+
+        .new-project-btn:active {
+            transform: scale(0.98);
+        }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tools-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tool-row-card {
+            background: var(--bg-hover);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tool-row-card:hover {
+            border-color: var(--accent-color);
+            background: rgba(30, 41, 59, 0.9);
+            transform: translateY(-1px);
+        }
+
+        .tool-info-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tool-icon-box {
+            width: 38px;
+            height: 38px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .tool-details h4 {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .tool-details p {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .tool-badges {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-pro {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--pro-color);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            font-size: 9px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 8px;
+        }
+
+        .badge-free {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success-color);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            font-size: 9px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 8px;
+        }
+
+        .ai-workspace {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .ai-workspace h3 {
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .ai-textarea {
+            width: 100%;
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 10px;
+            color: white;
+            font-size: 11px;
+            resize: none;
+            height: 60px;
+            outline: none;
+            margin-bottom: 10px;
+            transition: border-color 0.2s;
+        }
+
+        .ai-textarea:focus {
+            border-color: var(--accent-color);
+        }
+
+        .btn-action {
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 11px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            transition: opacity 0.2s;
+        }
+
+        .btn-action:active {
+            opacity: 0.9;
+        }
+
+        .ad-banner-container {
+            background: rgba(0,0,0,0.4);
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            padding: 6px;
+        }
+
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px;
+            background: rgba(15, 23, 42, 0.98);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-item {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 10px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-item.active, .nav-item:hover {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .nav-item span {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(7, 9, 14, 0.9);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 200;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-box {
+            background: var(--bg-hover);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 22px 18px;
+            width: 100%;
+            max-width: 340px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--text-main);
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pricing-option {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: border-color 0.2s;
+        }
+
+        .pricing-option:hover {
+            border-color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-frame">
+        <!-- إشعار حي منبثق للتخفيضات والهدايا -->
+        <div id="notificationToast">
+            <span style="font-size: 18px;">🎁</span>
+            <div>
+                <strong id="toastTitle" style="display: block; font-size: 11px; color: var(--pro-color);">عروض الهدايا الترحيبية!</strong>
+                <span id="toastDesc" style="font-size: 9px; color: var(--text-muted);">استفد من 3 مهام ذكاء اصطناعي مجانية الآن.</span>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <span>20:41</span>
+            <span>5G 🔋 100%</span>
+        </div>
+
+        <header class="app-header">
+            <h1>VideoGen x Omni</h1>
+            <span class="privacy-link" onclick="openPrivacyModal()">Confidentialité</span>
+        </header>
+
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="filterTools('all', event)">Tout</button>
+            <button class="tab-btn" onclick="filterTools('nouveau', event)">Nouveau</button>
+            <button class="tab-btn" onclick="filterTools('ai', event)">Basés sur l'IA</button>
+            <button class="tab-btn" onclick="filterTools('gratuit', event)">Gratuit</button>
+        </div>
+
+        <main class="app-content" id="appMainContainer">
+            <div class="gift-banner">
+                <h3>🎁 هدية الأعضاء الجدد: حزمة PRO</h3>
+                <p>احصل على أسرار صناعة الفيديوهات + 5 قوالب ذكاء اصطناعي مجاناً!</p>
+                <button class="claim-gift-btn" onclick="openProModal()">مطالبة بالهدية ✨</button>
+            </div>
+
+            <button class="new-project-btn" onclick="startNewProject()">
+                <span style="background: rgba(255,255,255,0.2); width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 13px;">+</span> NOUVEAU PROJET
+            </button>
+
+            <div class="section-title">Boîte à Outils Intelligente</div>
+            
+            <div class="tools-list" id="toolsGrid">
+                <div class="tool-row-card" data-category="gratuit ai" onclick="selectTool('Texte vers vidéo (Gratuit)')">
+                    <div class="tool-info-left">
+                        <div class="tool-icon-box">📝</div>
+                        <div class="tool-details">
+                            <h4>Texte vers vidéo</h4>
+                            <p>Générez des vidéos simples (Gratuit)</p>
+                        </div>
+                    </div>
+                    <div class="tool-badges"><span class="badge-free">Gratuit</span></div>
+                </div>
+
+                <div class="tool-row-card" data-category="ai" onclick="selectTool('Vidéo marketing PRO')">
+                    <div class="tool-info-left">
+                        <div class="tool-icon-box">📈</div>
+                        <div class="tool-details">
+                            <h4>Vidéo marketing</h4>
+                            <p>Optimisez vos ventes par IA (Moyen)</p>
+                        </div>
+                    </div>
+                    <div class="tool-badges"><span class="badge-pro">PRO $3.99</span></div>
+                </div>
+
+                <div class="tool-row-card" data-category="ai nouveau" onclick="selectTool('Histoire à Vidéo VIP')">
+                    <div class="tool-info-left">
+                        <div class="tool-icon-box">📖</div>
+                        <div class="tool-details">
+                            <h4>De l'histoire à vidéo</h4>
+                            <p>Transformez vos scripts en récits</p>
+                        </div>
+                    </div>
+                    <div class="tool-badges"><span class="badge-pro">VIP $9.99</span></div>
+                </div>
+
+                <div class="tool-row-card" data-category="gratuit nouveau" onclick="selectTool('Emoji IA (Gratuit)')">
+                    <div class="tool-info-left">
+                        <div class="tool-icon-box">🤖</div>
+                        <div class="tool-details">
+                            <h4>Emoji IA</h4>
+                            <p>Créez des emojis sur mesure</p>
+                        </div>
+                    </div>
+                    <div class="tool-badges"><span class="badge-free">Gratuit</span></div>
+                </div>
+
+                <div class="tool-row-card" data-category="ai" onclick="selectTool('Découpe Auto PRO')">
+                    <div class="tool-info-left">
+                        <div class="tool-icon-box">✂️</div>
+                        <div class="tool-details">
+                            <h4>Découpe auto IA</h4>
+                            <p>Supprimez les silences et plans</p>
+                        </div>
+                    </div>
+                    <div class="tool-badges"><span class="badge-pro">PRO</span></div>
+                </div>
+
+                <div class="tool-row-card" data-category="ai" onclick="selectTool('Ultra HD 4K VIP')">
+                    <div class="tool-info-left">
+                        <div class="tool-icon-box">✨</div>
+                        <div class="tool-details">
+                            <h4>Ultra HD 4K</h4>
+                            <p>Améliorez la résolution par IA</p>
+                        </div>
+                    </div>
+                    <div class="tool-badges"><span class="badge-pro">VIP</span></div>
+                </div>
+            </div>
+
+            <div class="ai-workspace" id="workspaceSection">
+                <h3>⚡ Espace Prompt & IA (Smart AI)</h3>
+                <textarea class="ai-textarea" id="userPrompt" placeholder="اكتب طلبك هنا، الذكاء الاصطناعي المجاني كيهتم بالخدمات البسيطة..."></textarea>
+                <button class="btn-action" onclick="runAIExecution()">Générer avec l'IA</button>
+                <p id="executionStatus" style="font-size: 11px; text-align: center; margin-top: 6px; color: var(--success-color);"></p>
+            </div>
+        </main>
+
+        <div class="ad-banner-container">
+            <span style="font-size: 9px; color: var(--text-muted);">Espace Publicitaire Officiel</span>
+        </div>
+
+        <nav class="bottom-nav">
+            <div class="nav-item" onclick="switchNavTab(this, 'models')"><span>🎬</span> Modèles</div>
+            <div class="nav-item active" onclick="switchNavTab(this, 'home')"><span>🏠</span> Accueil</div>
+            <div class="nav-item" onclick="switchNavTab(this, 'drafts')"><span>📁</span> Brouillons</div>
+            <div class="nav-item" onclick="openProModal()"><span>⭐</span> PRO VIP</div>
+        </nav>
+
+        <div class="modal-overlay" id="proModal">
+            <div class="modal-box">
+                <button class="close-modal-btn" onclick="closeProModal()">✕</button>
+                <h2 style="font-size: 17px; margin-bottom: 6px; color: var(--pro-color);">🎁 هديتك الخاصة + VIP Pro</h2>
+                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">
+                    اختر الباقة المناسبة لك واستمتع بالذكاء الاصطناعي القوي بدون قيود!
+                </p>
+                
+                <div class="pricing-option" onclick="alert('تم تفعيل باقة PRO المتوسطة بنجاح!')">
+                    <div>
+                        <strong style="font-size: 11px; display: block;">Pass Moyen (PRO)</strong>
+                        <span style="font-size: 9px; color: var(--text-muted);">ذكاء اصطناعي متوسط السرعة - 7 أيام</span>
+                    </div>
+                    <span style="font-size: 11px; font-weight: bold; color: var(--success-color);">3.99$</span>
+                </div>
+
+                <div class="pricing-option" onclick="alert('تم تفعيل باقة VIP الاحترافية بنجاح!')">
+                    <div>
+                        <strong style="font-size: 11px; display: block;">Abonnement VIP (Ultra)</strong>
+                        <span style="font-size: 9px; color: var(--text-muted);">أقوى ذكاء اصطناعي 4K - شهري</span>
+                    </div>
+                    <span style="font-size: 11px; font-weight: bold; color: var(--success-color);">9.99$</span>
+                </div>
+
+                <button class="btn-action" style="margin-top: 8px;" onclick="openProModal()">استلم هديتك واشترك الآن</button>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="privacyModal">
+            <div class="modal-box" style="text-align: left;">
+                <button class="close-modal-btn" onclick="closePrivacyModal()">✕</button>
+                <h2 style="font-size: 15px; margin-bottom: 8px; color: var(--accent-color);">Politique de Confidentialité</h2>
+                <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.5;">
+                    Conforme aux règles de Google Play. Nous respectons votre vie privée. L'application utilise des algorithmes d'intelligence artificielle. Aucune donnée sensible n'est collectée sans votre accord.
+                </p>
+                <button class="btn-action" onclick="closePrivacyModal()">J'ai compris</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // نظام الإشعارات التلقائية الحية (Notifications System)
+        const notificationsPool = [
+            { title: "🎁 هدية مجانية متاحة!", desc: "استفد من 3 قوالب ذكاء اصطناعي مجانية اليوم." },
+            { title: "⚡ تخفيضات باقة PRO", desc: "احصل على الباقة المتوسطة بثمن 3.99$ فقط لفترة محدودة." },
+            { title: "🔥 أداة جديدة مقترحة", desc: "تمت إضافة مولد الفيديوهات الذكي في قسم الإبداع." }
+        ];
+
+        function showNotification(index = 0) {
+            const toast = document.getElementById('notificationToast');
+            const titleEl = document.getElementById('toastTitle');
+            const descEl = document.getElementById('toastDesc');
+            
+            titleEl.innerText = notificationsPool[index].title;
+            descEl.innerText = notificationsPool[index].desc;
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4500);
+        }
+
+        // إطلاق أول إشعار تلقائياً بعد ثانيتين من فتح التطبيق
+        setTimeout(() => { showNotification(0); }, 2000);
+        // إشعار ثاني للتخفيضات بعد 12 ثانية
+        setTimeout(() => { showNotification(1); }, 12000);
+
+        function openPrivacyModal() {
+            document.getElementById('privacyModal').style.display = 'flex';
+        }
+
+        function closePrivacyModal() {
+            document.getElementById('privacyModal').style.display = 'none';
+        }
+
+        function filterTools(category, event) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const cards = document.querySelectorAll('.tool-row-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category').includes(category)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function selectTool(toolName) {
+            const promptInput = document.getElementById('userPrompt');
+            promptInput.value = "Exécuter la tâche: " + toolName;
+            
+            const workspace = document.getElementById('workspaceSection');
+            workspace.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+            workspace.style.borderColor = 'var(--accent-color)';
+            setTimeout(() => {
+                workspace.style.borderColor = 'var(--border-color)';
+            }, 800);
+        }
+
+        function startNewProject() {
+            const promptInput = document.getElementById('userPrompt');
+            promptInput.value = "Nouveau Projet Studio Pro - ";
+            document.getElementById('workspaceSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            promptInput.focus();
+        }
+
+        function runAIExecution() {
+            const prompt = document.getElementById('userPrompt').value;
+            const status = document.getElementById('executionStatus');
+            
+            if(!prompt.trim()) {
+                alert("Veuillez entrer une description ou choisir un outil.");
+                return;
+            }
+
+            // فحص أمان سياسات Google Play
+            const lowerPrompt = prompt.toLowerCase();
+            if(lowerPrompt.includes('illégal') || lowerPrompt.includes('violence')) {
+                status.style.color = '#ef4444';
+                status.innerText = "Erreur : Requête rejetée par les règles de sécurité de Google Play.";
+                return;
+            }
+
+            status.style.color = 'var(--success-color)';
+            status.innerText = "🔄 الذكاء الاصطناعي البسيط يعالج طلبك مجاناً...";
+            
+            setTimeout(() => {
+                status.innerText = "✅ تم بنجاح! الإخراج جاهز للتنزيل.";
+            }, 1500);
+        }
+
+        function openProModal() {
+            document.getElementById('proModal').style.display = 'flex';
+        }
+
+        function closeProModal() {
+            document.getElementById('proModal').style.display = 'none';
+        }
+
+        function switchNavTab(element, tabName) {
+            document.querySelectorAll('.bottom-nav .nav-item').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+            
+            if(tabName === 'models') {
+                alert("📂 مكتبة القوالب والنماذج جاهزة.");
+            } else if(tabName === 'drafts') {
+                alert("📁 لا توجد مسودات محفوظة حالياً.");
+            }
+        }
+    </script>
+</body>
+</html>
