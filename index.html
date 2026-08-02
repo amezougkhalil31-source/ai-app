@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI VideoGen & Omni Studio Pro</title>
+    <!-- FontAwesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --bg-main: #07090e;
@@ -139,10 +141,36 @@
             color: #fff;
         }
 
+        /* Search Section Added */
+        .search-container {
+            padding: 10px 16px;
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        .search-bar {
+            background: var(--bg-hover);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+        }
+
+        .search-bar input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            width: 100%;
+            font-size: 11px;
+        }
+
         .tabs-nav {
             display: flex;
             gap: 8px;
-            padding: 10px 16px;
+            padding: 8px 16px;
             overflow-x: auto;
             background: rgba(7, 9, 14, 0.6);
             border-bottom: 1px solid var(--border-color);
@@ -186,6 +214,14 @@
             border-radius: 4px;
         }
 
+        .page-view {
+            display: none;
+        }
+
+        .page-view.active {
+            display: block;
+        }
+
         .gift-banner {
             background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
             border: 1px solid rgba(245, 158, 11, 0.25);
@@ -225,27 +261,83 @@
             transform: scale(0.95);
         }
 
-        .new-project-btn {
+        /* Main Grid Tools (3 Columns Like Video) */
+        .tools-grid-3col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .grid-tool-card {
+            background: var(--bg-hover);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .grid-tool-card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .grid-tool-card i {
+            font-size: 18px;
+            color: var(--accent-color);
+        }
+
+        .grid-tool-card span {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+
+        /* Action Buttons Grid */
+        .main-action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .btn-new-project {
+            flex: 2;
             background: var(--accent-gradient);
             color: white;
             border: none;
-            width: 100%;
-            padding: 14px;
-            border-radius: 16px;
-            font-size: 13px;
+            padding: 12px;
+            border-radius: 14px;
+            font-size: 12px;
             font-weight: 800;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             cursor: pointer;
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
-            margin-bottom: 16px;
-            transition: transform 0.1s;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         }
 
-        .new-project-btn:active {
-            transform: scale(0.98);
+        .btn-resources {
+            flex: 1;
+            background: var(--bg-hover);
+            border: 1px solid var(--border-color);
+            color: white;
+            padding: 12px;
+            border-radius: 14px;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
         }
 
         .section-title {
@@ -420,10 +512,31 @@
             font-weight: bold;
         }
 
-        .nav-item span {
+        .nav-item i {
             font-size: 16px;
             display: block;
             margin-bottom: 2px;
+        }
+
+        /* Profile & Settings Menu List */
+        .settings-menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .menu-row-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: var(--bg-hover);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 12px;
+            cursor: pointer;
         }
 
         .modal-overlay {
@@ -513,100 +626,187 @@
             <span class="privacy-link" onclick="openPrivacyModal()">Confidentialité</span>
         </header>
 
+        <!-- Search Bar Section -->
+        <div class="search-container">
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Rechercher des modèles, outils IA...">
+            </div>
+        </div>
+
         <div class="tabs-nav">
-            <button class="tab-btn active" onclick="filterTools('all', event)">Tout</button>
-            <button class="tab-btn" onclick="filterTools('nouveau', event)">Nouveau</button>
-            <button class="tab-btn" onclick="filterTools('ai', event)">Basés sur l'IA</button>
-            <button class="tab-btn" onclick="filterTools('gratuit', event)">Gratuit</button>
+            <button class="tab-btn active" onclick="filterTools('all', event)">Bébés</button>
+            <button class="tab-btn" onclick="filterTools('solo', event)">Solo</button>
+            <button class="tab-btn" onclick="filterTools('animaux', event)">Animaux</button>
+            <button class="tab-btn" onclick="filterTools('tendances', event)">Tendances</button>
+            <button class="tab-btn" onclick="filterTools('marketing', event)">Marketing</button>
         </div>
 
         <main class="app-content" id="appMainContainer">
-            <div class="gift-banner">
-                <h3>🎁 هدية الأعضاء الجدد: حزمة PRO</h3>
-                <p>احصل على أسرار صناعة الفيديوهات + 5 قوالب ذكاء اصطناعي مجاناً!</p>
-                <button class="claim-gift-btn" onclick="openProModal()">مطالبة بالهدية ✨</button>
-            </div>
-
-            <button class="new-project-btn" onclick="startNewProject()">
-                <span style="background: rgba(255,255,255,0.2); width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 13px;">+</span> NOUVEAU PROJET
-            </button>
-
-            <div class="section-title">Boîte à Outils Intelligente</div>
             
-            <div class="tools-list" id="toolsGrid">
-                <div class="tool-row-card" data-category="gratuit ai" onclick="selectTool('Texte vers vidéo (Gratuit)')">
-                    <div class="tool-info-left">
-                        <div class="tool-icon-box">📝</div>
-                        <div class="tool-details">
-                            <h4>Texte vers vidéo</h4>
-                            <p>Générez des vidéos simples (Gratuit)</p>
-                        </div>
+            <!-- PAGE 1: ACCUEIL -->
+            <div id="page-accueil" class="page-view active">
+                
+                <!-- Quick Tools 3 Columns Grid -->
+                <div class="tools-grid-3col">
+                    <div class="grid-tool-card" onclick="selectTool('Image vers vidéo')">
+                        <i class="fa-solid fa-image"></i>
+                        <span>Image vers vidéo</span>
                     </div>
-                    <div class="tool-badges"><span class="badge-free">Gratuit</span></div>
+                    <div class="grid-tool-card" onclick="selectTool('De l\'histoire à la vidéo')">
+                        <i class="fa-solid fa-film"></i>
+                        <span>Histoire à vidéo</span>
+                    </div>
+                    <div class="grid-tool-card" onclick="selectTool('Vidéo marketing')">
+                        <i class="fa-solid fa-rectangle-ad"></i>
+                        <span>Vidéo marketing</span>
+                    </div>
+                    <div class="grid-tool-card" onclick="selectTool('Texte vers vidéo')">
+                        <i class="fa-solid fa-font"></i>
+                        <span>Texte vers vidéo</span>
+                    </div>
+                    <div class="grid-tool-card" onclick="selectTool('Découpe IA')">
+                        <i class="fa-solid fa-scissors"></i>
+                        <span>Découpe IA</span>
+                    </div>
+                    <div class="grid-tool-card" onclick="selectTool('Script à la vidéo')">
+                        <i class="fa-solid fa-scroll"></i>
+                        <span>Script à vidéo</span>
+                    </div>
                 </div>
 
-                <div class="tool-row-card" data-category="ai" onclick="selectTool('Vidéo marketing PRO')">
-                    <div class="tool-info-left">
-                        <div class="tool-icon-box">📈</div>
-                        <div class="tool-details">
-                            <h4>Vidéo marketing</h4>
-                            <p>Optimisez vos ventes par IA (Moyen)</p>
-                        </div>
-                    </div>
-                    <div class="tool-badges"><span class="badge-pro">PRO $3.99</span></div>
+                <!-- Main Action Buttons -->
+                <div class="main-action-buttons">
+                    <button class="btn-new-project" onclick="startNewProject()">
+                        <i class="fa-solid fa-plus"></i> NOUVEAU PROJET
+                    </button>
+                    <button class="btn-resources" onclick="alert('Chargement des ressources...')">
+                        <i class="fa-solid fa-folder-open"></i> Ressources
+                    </button>
                 </div>
 
-                <div class="tool-row-card" data-category="ai nouveau" onclick="selectTool('Histoire à Vidéo VIP')">
-                    <div class="tool-info-left">
-                        <div class="tool-icon-box">📖</div>
-                        <div class="tool-details">
-                            <h4>De l'histoire à vidéo</h4>
-                            <p>Transformez vos scripts en récits</p>
-                        </div>
-                    </div>
-                    <div class="tool-badges"><span class="badge-pro">VIP $9.99</span></div>
+                <div class="gift-banner">
+                    <h3>🎁 هدية الأعضاء الجدد: حزمة PRO</h3>
+                    <p>احصل على أسرار صناعة الفيديوهات + 5 قوالب ذكاء اصطناعي مجاناً!</p>
+                    <button class="claim-gift-btn" onclick="openProModal()">مطالبة بالهدية ✨</button>
                 </div>
 
-                <div class="tool-row-card" data-category="gratuit nouveau" onclick="selectTool('Emoji IA (Gratuit)')">
-                    <div class="tool-info-left">
-                        <div class="tool-icon-box">🤖</div>
-                        <div class="tool-details">
-                            <h4>Emoji IA</h4>
-                            <p>Créez des emojis sur mesure</p>
+                <div class="section-title">Boîte à Outils Intelligente</div>
+                
+                <div class="tools-list" id="toolsGrid">
+                    <div class="tool-row-card" data-category="gratuit ai" onclick="selectTool('Texte vers vidéo (Gratuit)')">
+                        <div class="tool-info-left">
+                            <div class="tool-icon-box">📝</div>
+                            <div class="tool-details">
+                                <h4>Texte vers vidéo</h4>
+                                <p>Générez des vidéos simples (Gratuit)</p>
+                            </div>
                         </div>
+                        <div class="tool-badges"><span class="badge-free">Gratuit</span></div>
                     </div>
-                    <div class="tool-badges"><span class="badge-free">Gratuit</span></div>
+
+                    <div class="tool-row-card" data-category="ai marketing" onclick="selectTool('Vidéo marketing PRO')">
+                        <div class="tool-info-left">
+                            <div class="tool-icon-box">📈</div>
+                            <div class="tool-details">
+                                <h4>Vidéo marketing</h4>
+                                <p>Optimisez vos ventes par IA (Moyen)</p>
+                            </div>
+                        </div>
+                        <div class="tool-badges"><span class="badge-pro">PRO $3.99</span></div>
+                    </div>
+
+                    <div class="tool-row-card" data-category="ai tendances" onclick="selectTool('Histoire à Vidéo VIP')">
+                        <div class="tool-info-left">
+                            <div class="tool-icon-box">📖</div>
+                            <div class="tool-details">
+                                <h4>De l'histoire à vidéo</h4>
+                                <p>Transformez vos scripts en récits</p>
+                            </div>
+                        </div>
+                        <div class="tool-badges"><span class="badge-pro">VIP $9.99</span></div>
+                    </div>
+
+                    <div class="tool-row-card" data-category="gratuit solo" onclick="selectTool('Emoji IA (Gratuit)')">
+                        <div class="tool-info-left">
+                            <div class="tool-icon-box">🤖</div>
+                            <div class="tool-details">
+                                <h4>Emoji IA</h4>
+                                <p>Créez des emojis sur mesure</p>
+                            </div>
+                        </div>
+                        <div class="tool-badges"><span class="badge-free">Gratuit</span></div>
+                    </div>
+
+                    <div class="tool-row-card" data-category="ai animaux" onclick="selectTool('Découpe Auto PRO')">
+                        <div class="tool-info-left">
+                            <div class="tool-icon-box">✂️</div>
+                            <div class="tool-details">
+                                <h4>Découpe auto IA</h4>
+                                <p>Supprimez les silences et plans</p>
+                            </div>
+                        </div>
+                        <div class="tool-badges"><span class="badge-pro">PRO</span></div>
+                    </div>
+
+                    <div class="tool-row-card" data-category="ai" onclick="selectTool('Ultra HD 4K VIP')">
+                        <div class="tool-info-left">
+                            <div class="tool-icon-box">✨</div>
+                            <div class="tool-details">
+                                <h4>Ultra HD 4K</h4>
+                                <p>Améliorez la résolution par IA</p>
+                            </div>
+                        </div>
+                        <div class="tool-badges"><span class="badge-pro">VIP</span></div>
+                    </div>
                 </div>
 
-                <div class="tool-row-card" data-category="ai" onclick="selectTool('Découpe Auto PRO')">
-                    <div class="tool-info-left">
-                        <div class="tool-icon-box">✂️</div>
-                        <div class="tool-details">
-                            <h4>Découpe auto IA</h4>
-                            <p>Supprimez les silences et plans</p>
-                        </div>
-                    </div>
-                    <div class="tool-badges"><span class="badge-pro">PRO</span></div>
-                </div>
-
-                <div class="tool-row-card" data-category="ai" onclick="selectTool('Ultra HD 4K VIP')">
-                    <div class="tool-info-left">
-                        <div class="tool-icon-box">✨</div>
-                        <div class="tool-details">
-                            <h4>Ultra HD 4K</h4>
-                            <p>Améliorez la résolution par IA</p>
-                        </div>
-                    </div>
-                    <div class="tool-badges"><span class="badge-pro">VIP</span></div>
+                <div class="ai-workspace" id="workspaceSection">
+                    <h3>⚡ Espace Prompt & IA (Smart AI)</h3>
+                    <textarea class="ai-textarea" id="userPrompt" placeholder="اكتب طلبك هنا، الذكاء الاصطناعي كيهتم بالخدمات..."></textarea>
+                    <button class="btn-action" onclick="runAIExecution()">Générer avec l'IA</button>
+                    <p id="executionStatus" style="font-size: 11px; text-align: center; margin-top: 6px; color: var(--success-color);"></p>
                 </div>
             </div>
 
-            <div class="ai-workspace" id="workspaceSection">
-                <h3>⚡ Espace Prompt & IA (Smart AI)</h3>
-                <textarea class="ai-textarea" id="userPrompt" placeholder="اكتب طلبك هنا، الذكاء الاصطناعي المجاني كيهتم بالخدمات البسيطة..."></textarea>
-                <button class="btn-action" onclick="runAIExecution()">Générer avec l'IA</button>
-                <p id="executionStatus" style="font-size: 11px; text-align: center; margin-top: 6px; color: var(--success-color);"></p>
+            <!-- PAGE 2: BROUILLONS -->
+            <div id="page-brouillons" class="page-view">
+                <div style="text-align: center; padding: 40px 10px;">
+                    <i class="fa-solid fa-box-open" style="font-size: 40px; color: var(--text-muted); margin-bottom: 15px;"></i>
+                    <h2 style="font-size: 16px; margin-bottom: 6px;">Tâches IA & Projets</h2>
+                    <p style="color: var(--text-muted); font-size: 11px; margin-bottom: 20px;">Le projet apparaîtra ici. Commencez à créer maintenant.</p>
+                    <button class="btn-action" style="max-width: 200px; margin: 0 auto;" onclick="switchNavTab(document.querySelector('.bottom-nav .nav-item:nth-child(1)'), 'accueil')">
+                        <i class="fa-solid fa-plus"></i> NOUVEAU PROJET
+                    </button>
+                </div>
             </div>
+
+            <!-- PAGE 3: MOI / SETTINGS -->
+            <div id="page-moi" class="page-view">
+                <div class="settings-menu-list">
+                    <div class="menu-row-item" onclick="openProModal()">
+                        <span><i class="fa-solid fa-gift" style="color: var(--pro-color); margin-right: 8px;"></i> Centre de tâches</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <div class="menu-row-item" onclick="alert('Restauration des achats...')">
+                        <span><i class="fa-solid fa-rotate-left" style="margin-right: 8px;"></i> Restaurer les achats</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <div class="menu-row-item">
+                        <span><i class="fa-solid fa-globe" style="margin-right: 8px;"></i> Langue de l'application</span>
+                        <span style="color: var(--accent-color); font-weight: bold;">FR</span>
+                    </div>
+                    <a href="privacy-policy.html" class="menu-row-item">
+                        <span><i class="fa-solid fa-shield-halved" style="margin-right: 8px;"></i> Politique de Confidentialité</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                    <a href="terms.html" class="menu-row-item">
+                        <span><i class="fa-solid fa-file-contract" style="margin-right: 8px;"></i> Conditions d'Utilisation</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                </div>
+            </div>
+
         </main>
 
         <div class="ad-banner-container">
@@ -614,10 +814,10 @@
         </div>
 
         <nav class="bottom-nav">
-            <div class="nav-item" onclick="switchNavTab(this, 'models')"><span>🎬</span> Modèles</div>
-            <div class="nav-item active" onclick="switchNavTab(this, 'home')"><span>🏠</span> Accueil</div>
-            <div class="nav-item" onclick="switchNavTab(this, 'drafts')"><span>📁</span> Brouillons</div>
-            <div class="nav-item" onclick="openProModal()"><span>⭐</span> PRO VIP</div>
+            <div class="nav-item active" onclick="switchNavTab(this, 'accueil')"><i class="fa-solid fa-house"></i> Accueil</div>
+            <div class="nav-item" onclick="switchNavTab(this, 'brouillons')"><i class="fa-solid fa-folder"></i> Brouillons</div>
+            <div class="nav-item" onclick="switchNavTab(this, 'moi')"><i class="fa-solid fa-user"></i> Moi</div>
+            <div class="nav-item" onclick="openProModal()"><i class="fa-solid fa-star" style="color: var(--pro-color);"></i> PRO VIP</div>
         </nav>
 
         <div class="modal-overlay" id="proModal">
@@ -661,7 +861,6 @@
     </div>
 
     <script>
-        // نظام الإشعارات التلقائية الحية (Notifications System)
         const notificationsPool = [
             { title: "🎁 هدية مجانية متاحة!", desc: "استفد من 3 قوالب ذكاء اصطناعي مجانية اليوم." },
             { title: "⚡ تخفيضات باقة PRO", desc: "احصل على الباقة المتوسطة بثمن 3.99$ فقط لفترة محدودة." },
@@ -677,15 +876,12 @@
             descEl.innerText = notificationsPool[index].desc;
             
             toast.classList.add('show');
-            
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 4500);
         }
 
-        // إطلاق أول إشعار تلقائياً بعد ثانيتين من فتح التطبيق
         setTimeout(() => { showNotification(0); }, 2000);
-        // إشعار ثاني للتخفيضات بعد 12 ثانية
         setTimeout(() => { showNotification(1); }, 12000);
 
         function openPrivacyModal() {
@@ -739,7 +935,6 @@
                 return;
             }
 
-            // فحص أمان سياسات Google Play
             const lowerPrompt = prompt.toLowerCase();
             if(lowerPrompt.includes('illégal') || lowerPrompt.includes('violence')) {
                 status.style.color = '#ef4444';
@@ -763,15 +958,12 @@
             document.getElementById('proModal').style.display = 'none';
         }
 
-        function switchNavTab(element, tabName) {
+        function switchNavTab(element, pageId) {
             document.querySelectorAll('.bottom-nav .nav-item').forEach(item => item.classList.remove('active'));
             element.classList.add('active');
-            
-            if(tabName === 'models') {
-                alert("📂 مكتبة القوالب والنماذج جاهزة.");
-            } else if(tabName === 'drafts') {
-                alert("📁 لا توجد مسودات محفوظة حالياً.");
-            }
+
+            document.querySelectorAll('.page-view').forEach(page => page.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
         }
     </script>
 </body>
