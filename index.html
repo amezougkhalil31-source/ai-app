@@ -845,7 +845,7 @@
                 </div>
             </div>
 
-            <!-- PAGE GENERATOR / IMAGE TO VIDEO (الواجهة الخاصة بتحويل الصور إلى فيديو التي طالبت بها) -->
+            <!-- PAGE GENERATOR / IMAGE TO VIDEO (صفحة التوليد وفتح المعرض مباشرة) -->
             <div id="page-generator" class="page-view">
                 <button class="btn-back" onclick="switchNavTab(null, 'accueil')">
                     <i class="fa-solid fa-arrow-left"></i> Retour au menu
@@ -854,10 +854,11 @@
                 <div class="ai-workspace">
                     <h3 id="currentToolTitle">⚡ Image vers vidéo</h3>
                     
-                    <!-- منطقة رفع الصورة المخصصة -->
-                    <div class="upload-dropzone" onclick="alert('نافذة اختيار الصورة من الجهاز...')">
+                    <!-- منطقة رفع الصورة المرتبطة بالمعرض (Galerie) مباشرة -->
+                    <div class="upload-dropzone" onclick="document.getElementById('fileInput').click()">
                         <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <p>Cliquez pour importer une image ou glissez-la ici</p>
+                        <p>Cliquez pour importer une image de votre galerie</p>
+                        <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="previewImage(event)">
                     </div>
 
                     <textarea class="ai-textarea" id="userPrompt" placeholder="صف الحركة أو التأثير المطلوب في الفيديو..."></textarea>
@@ -1043,6 +1044,16 @@
         function openGeneratorPage(toolName) {
             openImageToVideoPage();
             document.getElementById('currentToolTitle').innerText = "⚡ " + toolName;
+        }
+
+        // Preview Selected Image from Gallery
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const status = document.getElementById('executionStatus');
+                status.style.color = 'var(--success-color)';
+                status.innerText = "✅ تم اختيار الصورة بنجاح: " + file.name;
+            }
         }
 
         // Run AI Demo Action
