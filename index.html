@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI VideoGen & Omni Studio Pro</title>
+    <title>Happy Tracker & AI Studio Pro</title>
     <!-- FontAwesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -460,7 +460,7 @@
             border-radius: 8px;
         }
 
-        /* واجهة التوليد Generator Workspace */
+        /* واجهة التوليد Generator Workspace المتطورة */
         .ai-workspace {
             background: var(--bg-hover);
             border: 1px solid var(--border-color);
@@ -477,6 +477,32 @@
             color: var(--text-main);
         }
 
+        .upload-dropzone {
+            border: 2px dashed var(--border-color);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            background: var(--bg-main);
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: border-color 0.2s;
+        }
+
+        .upload-dropzone:hover {
+            border-color: var(--accent-color);
+        }
+
+        .upload-dropzone i {
+            font-size: 24px;
+            color: var(--accent-color);
+            margin-bottom: 6px;
+        }
+
+        .upload-dropzone p {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
         .ai-textarea {
             width: 100%;
             background: var(--bg-main);
@@ -486,7 +512,7 @@
             color: white;
             font-size: 11px;
             resize: none;
-            height: 100px;
+            height: 80px;
             outline: none;
             margin-bottom: 12px;
             transition: border-color 0.2s;
@@ -689,7 +715,7 @@
             <span style="font-size: 18px;">🎁</span>
             <div>
                 <strong id="toastTitle" style="display: block; font-size: 11px; color: var(--pro-color);">عروض الهدايا الترحيبية!</strong>
-                <span id="toastDesc" style="font-size: 9px; color: var(--text-muted);">استفد من 3 مهام ذكاء اصطناعي مجانية الآن.</span>
+                <span id="toastDesc" style="font-size: 9px; color: var(--text-muted);">استفد من مهام ذكاء اصطناعي مجانية الآن.</span>
             </div>
         </div>
 
@@ -701,7 +727,7 @@
 
         <!-- App Header -->
         <header class="app-header">
-            <h1>VideoGen x Omni</h1>
+            <h1>Happy Tracker & AI</h1>
             <a href="privacy-policy.html" target="_blank" class="privacy-link">Confidentialité</a>
         </header>
 
@@ -729,7 +755,7 @@
             <div id="page-accueil" class="page-view active">
                 
                 <div class="tools-grid-3col">
-                    <div class="grid-tool-card" onclick="openGeneratorPage('Image vers vidéo')">
+                    <div class="grid-tool-card" onclick="openImageToVideoPage()">
                         <i class="fa-solid fa-image"></i>
                         <span>Image vers vidéo</span>
                     </div>
@@ -773,15 +799,15 @@
                 <div class="section-title">Boîte à Outils Intelligente</div>
                 
                 <div class="tools-list" id="toolsGrid">
-                    <div class="tool-row-card" data-category="gratuit ai" onclick="openGeneratorPage('Texte vers vidéo (Gratuit)')">
+                    <div class="tool-row-card" data-category="gratuit ai" onclick="openImageToVideoPage()">
                         <div class="tool-info-left">
-                            <div class="tool-icon-box">📝</div>
+                            <div class="tool-icon-box">🖼️</div>
                             <div class="tool-details">
-                                <h4>Texte vers vidéo</h4>
-                                <p>Générez des vidéos simples (Gratuit)</p>
+                                <h4>Image vers vidéo</h4>
+                                <p>Transformez vos images en clips animés</p>
                             </div>
                         </div>
-                        <div class="tool-badges"><span class="badge-free">Gratuit</span></div>
+                        <div class="tool-badges"><span class="badge-free">Populaire</span></div>
                     </div>
 
                     <div class="tool-row-card" data-category="ai marketing" onclick="openGeneratorPage('Vidéo marketing PRO')">
@@ -789,7 +815,7 @@
                             <div class="tool-icon-box">📈</div>
                             <div class="tool-details">
                                 <h4>Vidéo marketing</h4>
-                                <p>Optimisez vos ventes par IA (Moyen)</p>
+                                <p>Optimisez vos ventes par IA</p>
                             </div>
                         </div>
                         <div class="tool-badges"><span class="badge-pro">PRO $3.99</span></div>
@@ -816,41 +842,27 @@
                         </div>
                         <div class="tool-badges"><span class="badge-free">Gratuit</span></div>
                     </div>
-
-                    <div class="tool-row-card" data-category="ai animaux" onclick="openGeneratorPage('Découpe Auto PRO')">
-                        <div class="tool-info-left">
-                            <div class="tool-icon-box">✂️</div>
-                            <div class="tool-details">
-                                <h4>Découpe auto IA</h4>
-                                <p>Supprimez les silences et plans</p>
-                            </div>
-                        </div>
-                        <div class="tool-badges"><span class="badge-pro">PRO</span></div>
-                    </div>
-
-                    <div class="tool-row-card" data-category="ai" onclick="openGeneratorPage('Ultra HD 4K VIP')">
-                        <div class="tool-info-left">
-                            <div class="tool-icon-box">✨</div>
-                            <div class="tool-details">
-                                <h4>Ultra HD 4K</h4>
-                                <p>Améliorez la résolution par IA</p>
-                            </div>
-                        </div>
-                        <div class="tool-badges"><span class="badge-pro">VIP</span></div>
-                    </div>
                 </div>
             </div>
 
-            <!-- PAGE GENERATOR: واجهة توليد جديدة ومستقلة لكل أداة -->
+            <!-- PAGE GENERATOR / IMAGE TO VIDEO (الواجهة الخاصة بتحويل الصور إلى فيديو التي طالبت بها) -->
             <div id="page-generator" class="page-view">
                 <button class="btn-back" onclick="switchNavTab(null, 'accueil')">
                     <i class="fa-solid fa-arrow-left"></i> Retour au menu
                 </button>
 
                 <div class="ai-workspace">
-                    <h3 id="currentToolTitle">⚡ Studio IA</h3>
-                    <textarea class="ai-textarea" id="userPrompt" placeholder="اكتب طلبك هنا..."></textarea>
-                    <button class="btn-action" onclick="runAIExecution()">Générer avec l'IA</button>
+                    <h3 id="currentToolTitle">⚡ Image vers vidéo</h3>
+                    
+                    <!-- منطقة رفع الصورة المخصصة -->
+                    <div class="upload-dropzone" onclick="alert('نافذة اختيار الصورة من الجهاز...')">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <p>Cliquez pour importer une image ou glissez-la ici</p>
+                    </div>
+
+                    <textarea class="ai-textarea" id="userPrompt" placeholder="صف الحركة أو التأثير المطلوب في الفيديو..."></textarea>
+                    
+                    <button class="btn-action" onclick="runAIExecution()">Générer la vidéo par IA</button>
                     <p id="executionStatus" style="font-size: 11px; text-align: center; margin-top: 10px; font-weight: bold;"></p>
                 </div>
             </div>
@@ -859,7 +871,7 @@
             <div id="page-brouillons" class="page-view">
                 <div style="text-align: center; padding: 40px 10px;">
                     <i class="fa-solid fa-folder-open" style="font-size: 44px; color: var(--accent-color); margin-bottom: 15px;"></i>
-                    <h2 style="font-size: 16px; margin-bottom: 6px;">Mes Projets & Mes Brouillons</h2>
+                    <h2 style="font-size: 16px; margin-bottom: 6px;">Mes Projets & Happy Tracker</h2>
                     <p style="color: var(--text-muted); font-size: 11px; margin-bottom: 20px;">Aucun projet en cours pour l'instant.</p>
                     <button class="btn-action" style="max-width: 220px; margin: 0 auto;" onclick="openGeneratorPage('Nouveau Projet')">
                         <i class="fa-solid fa-plus"></i> Créer un projet
@@ -874,7 +886,7 @@
                         <i class="fa-solid fa-user"></i>
                     </div>
                     <h3 style="font-size: 14px; font-weight: bold;">Compte Utilisateur</h3>
-                    <p style="font-size: 10px; color: var(--text-muted);">Membre Gratuit</p>
+                    <p style="font-size: 10px; color: var(--text-muted);">Membre Happy Tracker</p>
                 </div>
 
                 <div class="settings-menu-list">
@@ -882,8 +894,8 @@
                         <span><i class="fa-solid fa-crown" style="color: var(--pro-color); margin-right: 8px;"></i> Passer à la version PRO</span>
                         <i class="fa-solid fa-chevron-right"></i>
                     </div>
-                    <div class="menu-row-item" onclick="alert('Restauration des achats en cours...')">
-                        <span><i class="fa-solid fa-rotate-left" style="margin-right: 8px;"></i> Restaurer les achats</span>
+                    <div class="menu-row-item" onclick="alert('Restauration des données...')">
+                        <span><i class="fa-solid fa-rotate-left" style="margin-right: 8px;"></i> Restaurer les données</span>
                         <i class="fa-solid fa-chevron-right"></i>
                     </div>
                     <div class="menu-row-item">
@@ -900,18 +912,18 @@
             <!-- PAGE 4: PRO / VIP PAGE (صفحة الاشتراك المستقلة) -->
             <div id="page-pro" class="page-view">
                 <div style="text-align: center; margin-bottom: 16px;">
-                    <h2 style="font-size: 18px; font-weight: 800; color: var(--pro-color);">⭐ Omni Studio PRO / VIP</h2>
+                    <h2 style="font-size: 18px; font-weight: 800; color: var(--pro-color);">⭐ Happy Tracker PRO / VIP</h2>
                     <p style="font-size: 11px; color: var(--text-muted);">Débloquez toute la puissance de l'IA sans aucune limite.</p>
                 </div>
 
-                <div class="pricing-card-box popular" onclick="alert('Redirection vers PayPal (Pass 3.99$)...')">
+                <div class="pricing-card-box popular" onclick="alert('Redirection vers PayPal...')">
                     <span class="popular-badge">PLUS POPULAIRE</span>
                     <strong style="font-size: 13px; display: block; color: white;">Pass Moyen PRO</strong>
-                    <span style="font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 8px;">Accès rapide - Valable 7 Jours</span>
+                    <span style="font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 8px;">Accès illimité - Valable 7 Jours</span>
                     <div style="font-size: 18px; font-weight: 800; color: var(--success-color);">$3.99 <span style="font-size: 10px; color: var(--text-muted);">/ semaine</span></div>
                 </div>
 
-                <div class="pricing-card-box" onclick="alert('Redirection vers PayPal (VIP 9.99$)...')">
+                <div class="pricing-card-box" onclick="alert('Redirection vers PayPal...')">
                     <strong style="font-size: 13px; display: block; color: white;">Abonnement VIP Ultra 4K</strong>
                     <span style="font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 8px;">Génération illimitée & Résolution 4K</span>
                     <div style="font-size: 18px; font-weight: 800; color: var(--success-color);">$9.99 <span style="font-size: 10px; color: var(--text-muted);">/ mois</span></div>
@@ -926,7 +938,7 @@
 
         <!-- Footer Ad Banner -->
         <div class="ad-banner-container">
-            <span style="font-size: 9px; color: var(--text-muted);">Espace Publicitaire Officiel</span>
+            <span style="font-size: 9px; color: var(--text-muted);">Happy Tracker Official Space</span>
         </div>
 
         <!-- Navigation Bar Bottom -->
@@ -964,7 +976,7 @@
     <script>
         // Toast notifications logic
         const notificationsPool = [
-            { title: "🎁 هدية مجانية متاحة!", desc: "استفد من 3 قوالب ذكاء اصطناعي مجانية اليوم." },
+            { title: "🎁 هدية مجانية متاحة!", desc: "استفد من قوالب ذكاء اصطناعي مجانية اليوم." },
             { title: "⚡ تخفيضات باقة PRO", desc: "احصل على الباقة المتوسطة بثمن 3.99$ فقط لفترة محدودة." }
         ];
 
@@ -1012,21 +1024,25 @@
             document.querySelectorAll('.page-view').forEach(page => page.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
             
-            // Reset scroll position to top when changing views
             document.getElementById('appMainContainer').scrollTop = 0;
         }
 
-        // Open independent Generator Page
-        function openGeneratorPage(toolName) {
+        // Open Image to Video Custom Generator Page
+        function openImageToVideoPage() {
             document.querySelectorAll('.page-view').forEach(page => page.classList.remove('active'));
             document.getElementById('page-generator').classList.add('active');
             
-            document.getElementById('currentToolTitle').innerText = "⚡ " + toolName;
+            document.getElementById('currentToolTitle').innerText = "⚡ Image vers vidéo";
             document.getElementById('userPrompt').value = "";
-            document.getElementById('userPrompt').placeholder = "Entrez vos instructions pour " + toolName + "...";
             document.getElementById('executionStatus').innerText = "";
             
             document.getElementById('appMainContainer').scrollTop = 0;
+        }
+
+        // Open general generator page for other tools
+        function openGeneratorPage(toolName) {
+            openImageToVideoPage();
+            document.getElementById('currentToolTitle').innerText = "⚡ " + toolName;
         }
 
         // Run AI Demo Action
@@ -1044,7 +1060,7 @@
             
             setTimeout(() => {
                 status.style.color = 'var(--success-color)';
-                status.innerText = "✅ تم بنجاح! الإخراج جاهز للتنزيل.";
+                status.innerText = "✅ تم بنجاح! الفيديو الخاص بك جاهز.";
             }, 1600);
         }
 
