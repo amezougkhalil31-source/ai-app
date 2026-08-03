@@ -67,7 +67,7 @@
             }
         }
 
-        /* نظام الإشعارات المنبثقة الحية */
+        /* Toast Notifications */
         #notificationToast {
             position: absolute;
             top: 55px;
@@ -84,7 +84,7 @@
             align-items: center;
             gap: 10px;
             z-index: 300;
-            transition: all 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             opacity: 0;
             pointer-events: none;
             max-width: 90%;
@@ -129,19 +129,19 @@
             color: var(--text-muted);
             text-decoration: none;
             background: var(--bg-hover);
-            padding: 4px 10px;
-            border-radius: 8px;
+            padding: 5px 12px;
+            border-radius: 10px;
             border: 1px solid var(--border-color);
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
 
         .privacy-link:hover {
             background: var(--accent-color);
             color: #fff;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
         }
 
-        /* Search Section Added */
         .search-container {
             padding: 10px 16px;
             background: rgba(15, 23, 42, 0.95);
@@ -156,6 +156,11 @@
             align-items: center;
             gap: 10px;
             color: var(--text-muted);
+            transition: border-color 0.2s;
+        }
+
+        .search-bar:focus-within {
+            border-color: var(--accent-color);
         }
 
         .search-bar input {
@@ -197,6 +202,7 @@
             background: var(--accent-color);
             color: white;
             border-color: transparent;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         }
 
         .app-content {
@@ -204,6 +210,7 @@
             overflow-y: auto;
             padding: 16px;
             scroll-behavior: smooth;
+            position: relative;
         }
 
         .app-content::-webkit-scrollbar {
@@ -214,21 +221,29 @@
             border-radius: 4px;
         }
 
+        /* نظام الانتقال بين الصفحات */
         .page-view {
             display: none;
+            animation: fadeIn 0.3s ease-in-out forwards;
         }
 
         .page-view.active {
             display: block;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .gift-banner {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
-            border: 1px solid rgba(245, 158, 11, 0.25);
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.3);
             border-radius: 16px;
             padding: 14px;
             margin-bottom: 16px;
             text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
         .gift-banner h3 {
@@ -249,19 +264,19 @@
             background: var(--pro-color);
             color: #000;
             border: none;
-            padding: 6px 14px;
+            padding: 7px 16px;
             border-radius: 10px;
             font-size: 10px;
             font-weight: 800;
             cursor: pointer;
-            transition: transform 0.1s;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
         }
 
         .claim-gift-btn:active {
             transform: scale(0.95);
         }
 
-        /* Main Grid Tools (3 Columns Like Video) */
         .tools-grid-3col {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -272,24 +287,30 @@
         .grid-tool-card {
             background: var(--bg-hover);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 12px 8px;
+            border-radius: 14px;
+            padding: 14px 8px;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
         .grid-tool-card:hover {
             border-color: var(--accent-color);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.25);
+        }
+
+        .grid-tool-card:active {
+            transform: scale(0.96);
         }
 
         .grid-tool-card i {
-            font-size: 18px;
+            font-size: 20px;
             color: var(--accent-color);
         }
 
@@ -300,7 +321,6 @@
             line-height: 1.2;
         }
 
-        /* Action Buttons Grid */
         .main-action-buttons {
             display: flex;
             gap: 10px;
@@ -321,7 +341,12 @@
             justify-content: center;
             gap: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .btn-new-project:active {
+            transform: scale(0.97);
         }
 
         .btn-resources {
@@ -338,6 +363,11 @@
             justify-content: center;
             gap: 6px;
             cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-resources:hover {
+            background: rgba(255,255,255,0.08);
         }
 
         .section-title {
@@ -360,7 +390,7 @@
             background: var(--bg-hover);
             border: 1px solid var(--border-color);
             border-radius: 14px;
-            padding: 12px;
+            padding: 12px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -370,8 +400,8 @@
 
         .tool-row-card:hover {
             border-color: var(--accent-color);
+            transform: translateX(3px);
             background: rgba(30, 41, 59, 0.9);
-            transform: translateY(-1px);
         }
 
         .tool-info-left {
@@ -381,15 +411,15 @@
         }
 
         .tool-icon-box {
-            width: 38px;
-            height: 38px;
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            background: rgba(99, 102, 241, 0.12);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 18px;
         }
 
         .tool-details h4 {
@@ -430,19 +460,20 @@
             border-radius: 8px;
         }
 
+        /* واجهة التوليد Generator Workspace */
         .ai-workspace {
-            background: rgba(255, 255, 255, 0.015);
+            background: var(--bg-hover);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 16px;
-            transition: border-color 0.3s;
+            border-radius: 18px;
+            padding: 16px;
+            margin-top: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .ai-workspace h3 {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: var(--text-main);
         }
 
@@ -451,13 +482,13 @@
             background: var(--bg-main);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 10px;
+            padding: 12px;
             color: white;
             font-size: 11px;
             resize: none;
-            height: 60px;
+            height: 100px;
             outline: none;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             transition: border-color 0.2s;
         }
 
@@ -470,19 +501,40 @@
             color: white;
             border: none;
             width: 100%;
-            padding: 11px;
+            padding: 12px;
             border-radius: 12px;
             font-size: 11px;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-            transition: opacity 0.2s;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            transition: transform 0.1s, opacity 0.2s;
         }
 
         .btn-action:active {
-            opacity: 0.9;
+            transform: scale(0.98);
         }
 
+        .btn-back {
+            background: var(--bg-hover);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 7px 14px;
+            border-radius: 10px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-bottom: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-back:hover {
+            color: #fff;
+            border-color: var(--accent-color);
+        }
+
+        /* Nav Bottom Bar */
         .ad-banner-container {
             background: rgba(0,0,0,0.4);
             border-top: 1px solid var(--border-color);
@@ -494,7 +546,7 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 10px;
+            padding: 12px;
             background: rgba(15, 23, 42, 0.98);
             border-top: 1px solid var(--border-color);
         }
@@ -504,41 +556,84 @@
             color: var(--text-muted);
             font-size: 10px;
             cursor: pointer;
-            transition: color 0.2s;
+            transition: all 0.2s;
         }
 
         .nav-item.active, .nav-item:hover {
             color: var(--accent-color);
             font-weight: bold;
+            transform: translateY(-2px);
         }
 
         .nav-item i {
-            font-size: 16px;
+            font-size: 18px;
             display: block;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
         }
 
-        /* Profile & Settings Menu List */
+        /* Settings List */
         .settings-menu-list {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 8px;
         }
 
         .menu-row-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px;
+            padding: 14px;
             background: var(--bg-hover);
-            border-radius: 10px;
-            margin-bottom: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
             color: var(--text-main);
             text-decoration: none;
             font-size: 12px;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
+        .menu-row-item:hover {
+            border-color: var(--accent-color);
+            transform: translateX(2px);
+        }
+
+        /* Pricing Card Design */
+        .pricing-card-box {
+            background: var(--bg-hover);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            text-align: left;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pricing-card-box:hover {
+            border-color: var(--pro-color);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+        }
+
+        .pricing-card-box.popular {
+            border-color: var(--accent-color);
+            background: linear-gradient(180deg, rgba(99, 102, 241, 0.1) 0%, var(--bg-hover) 100%);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -10px;
+            right: 14px;
+            background: var(--accent-gradient);
+            color: white;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        /* Modal Overlay */
         .modal-overlay {
             position: absolute;
             top: 0;
@@ -552,7 +647,7 @@
             align-items: center;
             padding: 20px;
             z-index: 200;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(6px);
         }
 
         .modal-box {
@@ -584,30 +679,12 @@
             align-items: center;
             justify-content: center;
         }
-
-        .pricing-option {
-            background: var(--bg-main);
-            border: 1px solid var(--border-color);
-            padding: 10px 12px;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            text-align: left;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: border-color 0.2s;
-        }
-
-        .pricing-option:hover {
-            border-color: var(--accent-color);
-        }
     </style>
 </head>
 <body>
 
     <div class="mobile-frame">
-        <!-- إشعار حي منبثق للتخفيضات والهدايا -->
+        <!-- Toast Notification -->
         <div id="notificationToast">
             <span style="font-size: 18px;">🎁</span>
             <div>
@@ -616,17 +693,19 @@
             </div>
         </div>
 
+        <!-- Status Bar -->
         <div class="status-bar">
             <span>20:41</span>
             <span>5G 🔋 100%</span>
         </div>
 
+        <!-- App Header -->
         <header class="app-header">
             <h1>VideoGen x Omni</h1>
             <a href="privacy-policy.html" target="_blank" class="privacy-link">Confidentialité</a>
         </header>
 
-        <!-- Search Bar Section -->
+        <!-- Search Bar -->
         <div class="search-container">
             <div class="search-bar">
                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -634,50 +713,50 @@
             </div>
         </div>
 
+        <!-- Filter Tabs -->
         <div class="tabs-nav">
-            <button class="tab-btn active" onclick="filterTools('all', event)">Bébés</button>
+            <button class="tab-btn active" onclick="filterTools('all', event)">Tout</button>
             <button class="tab-btn" onclick="filterTools('solo', event)">Solo</button>
             <button class="tab-btn" onclick="filterTools('animaux', event)">Animaux</button>
             <button class="tab-btn" onclick="filterTools('tendances', event)">Tendances</button>
             <button class="tab-btn" onclick="filterTools('marketing', event)">Marketing</button>
         </div>
 
+        <!-- App Main Content Container -->
         <main class="app-content" id="appMainContainer">
             
-            <!-- PAGE 1: ACCUEIL -->
+            <!-- PAGE 1: ACCUEIL (الصفحة الرئيسية) -->
             <div id="page-accueil" class="page-view active">
                 
-                <!-- Quick Tools 3 Columns Grid -->
                 <div class="tools-grid-3col">
-                    <div class="grid-tool-card" onclick="selectTool('Image vers vidéo')">
+                    <div class="grid-tool-card" onclick="openGeneratorPage('Image vers vidéo')">
                         <i class="fa-solid fa-image"></i>
                         <span>Image vers vidéo</span>
                     </div>
-                    <div class="grid-tool-card" onclick="selectTool('De l\'histoire à la vidéo')">
+                    <div class="grid-tool-card" onclick="openGeneratorPage('De l\'histoire à la vidéo')">
                         <i class="fa-solid fa-film"></i>
                         <span>Histoire à vidéo</span>
                     </div>
-                    <div class="grid-tool-card" onclick="selectTool('Vidéo marketing')">
+                    <div class="grid-tool-card" onclick="openGeneratorPage('Vidéo marketing')">
                         <i class="fa-solid fa-rectangle-ad"></i>
                         <span>Vidéo marketing</span>
                     </div>
-                    <div class="grid-tool-card" onclick="selectTool('Texte vers vidéo')">
+                    <div class="grid-tool-card" onclick="openGeneratorPage('Texte vers vidéo')">
                         <i class="fa-solid fa-font"></i>
                         <span>Texte vers vidéo</span>
                     </div>
-                    <div class="grid-tool-card" onclick="selectTool('Découpe IA')">
+                    <div class="grid-tool-card" onclick="openGeneratorPage('Découpe IA')">
                         <i class="fa-solid fa-scissors"></i>
                         <span>Découpe IA</span>
                     </div>
-                    <div class="grid-tool-card" onclick="selectTool('Script à la vidéo')">
+                    <div class="grid-tool-card" onclick="openGeneratorPage('Script à la vidéo')">
                         <i class="fa-solid fa-scroll"></i>
                         <span>Script à vidéo</span>
                     </div>
                 </div>
 
-                <!-- Main Action Buttons -->
                 <div class="main-action-buttons">
-                    <button class="btn-new-project" onclick="startNewProject()">
+                    <button class="btn-new-project" onclick="openGeneratorPage('Nouveau Projet Studio Pro')">
                         <i class="fa-solid fa-plus"></i> NOUVEAU PROJET
                     </button>
                     <button class="btn-resources" onclick="alert('Chargement des ressources...')">
@@ -694,7 +773,7 @@
                 <div class="section-title">Boîte à Outils Intelligente</div>
                 
                 <div class="tools-list" id="toolsGrid">
-                    <div class="tool-row-card" data-category="gratuit ai" onclick="selectTool('Texte vers vidéo (Gratuit)')">
+                    <div class="tool-row-card" data-category="gratuit ai" onclick="openGeneratorPage('Texte vers vidéo (Gratuit)')">
                         <div class="tool-info-left">
                             <div class="tool-icon-box">📝</div>
                             <div class="tool-details">
@@ -705,7 +784,7 @@
                         <div class="tool-badges"><span class="badge-free">Gratuit</span></div>
                     </div>
 
-                    <div class="tool-row-card" data-category="ai marketing" onclick="selectTool('Vidéo marketing PRO')">
+                    <div class="tool-row-card" data-category="ai marketing" onclick="openGeneratorPage('Vidéo marketing PRO')">
                         <div class="tool-info-left">
                             <div class="tool-icon-box">📈</div>
                             <div class="tool-details">
@@ -716,7 +795,7 @@
                         <div class="tool-badges"><span class="badge-pro">PRO $3.99</span></div>
                     </div>
 
-                    <div class="tool-row-card" data-category="ai tendances" onclick="selectTool('Histoire à Vidéo VIP')">
+                    <div class="tool-row-card" data-category="ai tendances" onclick="openGeneratorPage('Histoire à Vidéo VIP')">
                         <div class="tool-info-left">
                             <div class="tool-icon-box">📖</div>
                             <div class="tool-details">
@@ -727,7 +806,7 @@
                         <div class="tool-badges"><span class="badge-pro">VIP $9.99</span></div>
                     </div>
 
-                    <div class="tool-row-card" data-category="gratuit solo" onclick="selectTool('Emoji IA (Gratuit)')">
+                    <div class="tool-row-card" data-category="gratuit solo" onclick="openGeneratorPage('Emoji IA (Gratuit)')">
                         <div class="tool-info-left">
                             <div class="tool-icon-box">🤖</div>
                             <div class="tool-details">
@@ -738,7 +817,7 @@
                         <div class="tool-badges"><span class="badge-free">Gratuit</span></div>
                     </div>
 
-                    <div class="tool-row-card" data-category="ai animaux" onclick="selectTool('Découpe Auto PRO')">
+                    <div class="tool-row-card" data-category="ai animaux" onclick="openGeneratorPage('Découpe Auto PRO')">
                         <div class="tool-info-left">
                             <div class="tool-icon-box">✂️</div>
                             <div class="tool-details">
@@ -749,7 +828,7 @@
                         <div class="tool-badges"><span class="badge-pro">PRO</span></div>
                     </div>
 
-                    <div class="tool-row-card" data-category="ai" onclick="selectTool('Ultra HD 4K VIP')">
+                    <div class="tool-row-card" data-category="ai" onclick="openGeneratorPage('Ultra HD 4K VIP')">
                         <div class="tool-info-left">
                             <div class="tool-icon-box">✨</div>
                             <div class="tool-details">
@@ -760,111 +839,133 @@
                         <div class="tool-badges"><span class="badge-pro">VIP</span></div>
                     </div>
                 </div>
+            </div>
 
-                <div class="ai-workspace" id="workspaceSection">
-                    <h3>⚡ Espace Prompt & IA (Smart AI)</h3>
-                    <textarea class="ai-textarea" id="userPrompt" placeholder="اكتب طلبك هنا، الذكاء الاصطناعي كيهتم بالخدمات..."></textarea>
+            <!-- PAGE GENERATOR: واجهة توليد جديدة ومستقلة لكل أداة -->
+            <div id="page-generator" class="page-view">
+                <button class="btn-back" onclick="switchNavTab(null, 'accueil')">
+                    <i class="fa-solid fa-arrow-left"></i> Retour au menu
+                </button>
+
+                <div class="ai-workspace">
+                    <h3 id="currentToolTitle">⚡ Studio IA</h3>
+                    <textarea class="ai-textarea" id="userPrompt" placeholder="اكتب طلبك هنا..."></textarea>
                     <button class="btn-action" onclick="runAIExecution()">Générer avec l'IA</button>
-                    <p id="executionStatus" style="font-size: 11px; text-align: center; margin-top: 6px; color: var(--success-color);"></p>
+                    <p id="executionStatus" style="font-size: 11px; text-align: center; margin-top: 10px; font-weight: bold;"></p>
                 </div>
             </div>
 
-            <!-- PAGE 2: BROUILLONS -->
+            <!-- PAGE 2: BROUILLONS (صفحة المشاريع) -->
             <div id="page-brouillons" class="page-view">
                 <div style="text-align: center; padding: 40px 10px;">
-                    <i class="fa-solid fa-box-open" style="font-size: 40px; color: var(--text-muted); margin-bottom: 15px;"></i>
-                    <h2 style="font-size: 16px; margin-bottom: 6px;">Tâches IA & Projets</h2>
-                    <p style="color: var(--text-muted); font-size: 11px; margin-bottom: 20px;">Le projet apparaîtra ici. Commencez à créer maintenant.</p>
-                    <button class="btn-action" style="max-width: 200px; margin: 0 auto;" onclick="switchNavTab(document.querySelector('.bottom-nav .nav-item:nth-child(1)'), 'accueil')">
-                        <i class="fa-solid fa-plus"></i> NOUVEAU PROJET
+                    <i class="fa-solid fa-folder-open" style="font-size: 44px; color: var(--accent-color); margin-bottom: 15px;"></i>
+                    <h2 style="font-size: 16px; margin-bottom: 6px;">Mes Projets & Mes Brouillons</h2>
+                    <p style="color: var(--text-muted); font-size: 11px; margin-bottom: 20px;">Aucun projet en cours pour l'instant.</p>
+                    <button class="btn-action" style="max-width: 220px; margin: 0 auto;" onclick="openGeneratorPage('Nouveau Projet')">
+                        <i class="fa-solid fa-plus"></i> Créer un projet
                     </button>
                 </div>
             </div>
 
-            <!-- PAGE 3: MOI / SETTINGS -->
+            <!-- PAGE 3: MOI / SETTINGS (صفحة الحساب والإعدادات) -->
             <div id="page-moi" class="page-view">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="width: 60px; height: 60px; background: var(--accent-gradient); border-radius: 50%; margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-size: 24px; color: white;">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <h3 style="font-size: 14px; font-weight: bold;">Compte Utilisateur</h3>
+                    <p style="font-size: 10px; color: var(--text-muted);">Membre Gratuit</p>
+                </div>
+
                 <div class="settings-menu-list">
-                    <div class="menu-row-item" onclick="openProModal()">
-                        <span><i class="fa-solid fa-gift" style="color: var(--pro-color); margin-right: 8px;"></i> Centre de tâches</span>
+                    <div class="menu-row-item" onclick="switchNavTab(null, 'pro')">
+                        <span><i class="fa-solid fa-crown" style="color: var(--pro-color); margin-right: 8px;"></i> Passer à la version PRO</span>
                         <i class="fa-solid fa-chevron-right"></i>
                     </div>
-                    <div class="menu-row-item" onclick="alert('Restauration des achats...')">
+                    <div class="menu-row-item" onclick="alert('Restauration des achats en cours...')">
                         <span><i class="fa-solid fa-rotate-left" style="margin-right: 8px;"></i> Restaurer les achats</span>
                         <i class="fa-solid fa-chevron-right"></i>
                     </div>
                     <div class="menu-row-item">
-                        <span><i class="fa-solid fa-globe" style="margin-right: 8px;"></i> Langue de l'application</span>
-                        <span style="color: var(--accent-color); font-weight: bold;">FR</span>
+                        <span><i class="fa-solid fa-globe" style="margin-right: 8px;"></i> Langue</span>
+                        <span style="color: var(--accent-color); font-weight: bold;">Français</span>
                     </div>
                     <a href="privacy-policy.html" target="_blank" class="menu-row-item">
-                        <span><i class="fa-solid fa-shield-halved" style="margin-right: 8px;"></i> Politique de Confidentialité</span>
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </a>
-                    <a href="terms.html" class="menu-row-item">
-                        <span><i class="fa-solid fa-file-contract" style="margin-right: 8px;"></i> Conditions d'Utilisation</span>
+                        <span><i class="fa-solid fa-shield-halved" style="margin-right: 8px;"></i> Confidentialité</span>
                         <i class="fa-solid fa-chevron-right"></i>
                     </a>
                 </div>
+            </div>
+
+            <!-- PAGE 4: PRO / VIP PAGE (صفحة الاشتراك المستقلة) -->
+            <div id="page-pro" class="page-view">
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <h2 style="font-size: 18px; font-weight: 800; color: var(--pro-color);">⭐ Omni Studio PRO / VIP</h2>
+                    <p style="font-size: 11px; color: var(--text-muted);">Débloquez toute la puissance de l'IA sans aucune limite.</p>
+                </div>
+
+                <div class="pricing-card-box popular" onclick="alert('Redirection vers PayPal (Pass 3.99$)...')">
+                    <span class="popular-badge">PLUS POPULAIRE</span>
+                    <strong style="font-size: 13px; display: block; color: white;">Pass Moyen PRO</strong>
+                    <span style="font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 8px;">Accès rapide - Valable 7 Jours</span>
+                    <div style="font-size: 18px; font-weight: 800; color: var(--success-color);">$3.99 <span style="font-size: 10px; color: var(--text-muted);">/ semaine</span></div>
+                </div>
+
+                <div class="pricing-card-box" onclick="alert('Redirection vers PayPal (VIP 9.99$)...')">
+                    <strong style="font-size: 13px; display: block; color: white;">Abonnement VIP Ultra 4K</strong>
+                    <span style="font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 8px;">Génération illimitée & Résolution 4K</span>
+                    <div style="font-size: 18px; font-weight: 800; color: var(--success-color);">$9.99 <span style="font-size: 10px; color: var(--text-muted);">/ mois</span></div>
+                </div>
+
+                <button class="btn-action" style="margin-top: 10px; background: var(--accent-gradient);" onclick="alert('Redirection vers le paiement sécurisé...')">
+                    <i class="fa-brands fa-paypal"></i> Payer avec PayPal / Carte
+                </button>
             </div>
 
         </main>
 
+        <!-- Footer Ad Banner -->
         <div class="ad-banner-container">
             <span style="font-size: 9px; color: var(--text-muted);">Espace Publicitaire Officiel</span>
         </div>
 
+        <!-- Navigation Bar Bottom -->
         <nav class="bottom-nav">
-            <div class="nav-item active" onclick="switchNavTab(this, 'accueil')"><i class="fa-solid fa-house"></i> Accueil</div>
-            <div class="nav-item" onclick="switchNavTab(this, 'brouillons')"><i class="fa-solid fa-folder"></i> Brouillons</div>
-            <div class="nav-item" onclick="switchNavTab(this, 'moi')"><i class="fa-solid fa-user"></i> Moi</div>
-            <div class="nav-item" onclick="openProModal()"><i class="fa-solid fa-star" style="color: var(--pro-color);"></i> PRO VIP</div>
+            <div class="nav-item active" id="nav-accueil" onclick="switchNavTab(this, 'accueil')">
+                <i class="fa-solid fa-house"></i> Accueil
+            </div>
+            <div class="nav-item" id="nav-brouillons" onclick="switchNavTab(this, 'brouillons')">
+                <i class="fa-solid fa-folder"></i> Brouillons
+            </div>
+            <div class="nav-item" id="nav-moi" onclick="switchNavTab(this, 'moi')">
+                <i class="fa-solid fa-user"></i> Moi
+            </div>
+            <div class="nav-item" id="nav-pro" onclick="switchNavTab(this, 'pro')">
+                <i class="fa-solid fa-star" style="color: var(--pro-color);"></i> PRO VIP
+            </div>
         </nav>
 
+        <!-- Modal Popup -->
         <div class="modal-overlay" id="proModal">
             <div class="modal-box">
                 <button class="close-modal-btn" onclick="closeProModal()">✕</button>
-                <h2 style="font-size: 17px; margin-bottom: 6px; color: var(--pro-color);">🎁 هديتك الخاصة + VIP Pro</h2>
-                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">
+                <h2 style="font-size: 16px; margin-bottom: 6px; color: var(--pro-color);">🎁 هديتك الخاصة + VIP Pro</h2>
+                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.4;">
                     اختر الباقة المناسبة لك واستمتع بالذكاء الاصطناعي القوي بدون قيود!
                 </p>
-                
-                <div class="pricing-option" onclick="alert('تم تفعيل باقة PRO المتوسطة بنجاح!')">
-                    <div>
-                        <strong style="font-size: 11px; display: block;">Pass Moyen (PRO)</strong>
-                        <span style="font-size: 9px; color: var(--text-muted);">ذكاء اصطناعي متوسط السرعة - 7 أيام</span>
-                    </div>
-                    <span style="font-size: 11px; font-weight: bold; color: var(--success-color);">3.99$</span>
-                </div>
-
-                <div class="pricing-option" onclick="alert('تم تفعيل باقة VIP الاحترافية بنجاح!')">
-                    <div>
-                        <strong style="font-size: 11px; display: block;">Abonnement VIP (Ultra)</strong>
-                        <span style="font-size: 9px; color: var(--text-muted);">أقوى ذكاء اصطناعي 4K - شهري</span>
-                    </div>
-                    <span style="font-size: 11px; font-weight: bold; color: var(--success-color);">9.99$</span>
-                </div>
-
-                <button class="btn-action" style="margin-top: 8px;" onclick="openProModal()">استلم هديتك واشترك الآن</button>
+                <button class="btn-action" onclick="closeProModal(); switchNavTab(document.getElementById('nav-pro'), 'pro');">
+                    عرض الباقات والاشتراكات
+                </button>
             </div>
         </div>
 
-        <div class="modal-overlay" id="privacyModal">
-            <div class="modal-box" style="text-align: left;">
-                <button class="close-modal-btn" onclick="closePrivacyModal()">✕</button>
-                <h2 style="font-size: 15px; margin-bottom: 8px; color: var(--accent-color);">Politique de Confidentialité</h2>
-                <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.5;">
-                    Conforme aux règles de Google Play. Nous respectons votre vie privée. L'application utilise des algorithmes d'intelligence artificielle. Aucune donnée sensible n'est collectée sans votre accord.
-                </p>
-                <button class="btn-action" onclick="closePrivacyModal()">J'ai compris</button>
-            </div>
-        </div>
     </div>
 
     <script>
+        // Toast notifications logic
         const notificationsPool = [
             { title: "🎁 هدية مجانية متاحة!", desc: "استفد من 3 قوالب ذكاء اصطناعي مجانية اليوم." },
-            { title: "⚡ تخفيضات باقة PRO", desc: "احصل على الباقة المتوسطة بثمن 3.99$ فقط لفترة محدودة." },
-            { title: "🔥 أداة جديدة مقترحة", desc: "تمت إضافة مولد الفيديوهات الذكي في قسم الإبداع." }
+            { title: "⚡ تخفيضات باقة PRO", desc: "احصل على الباقة المتوسطة بثمن 3.99$ فقط لفترة محدودة." }
         ];
 
         function showNotification(index = 0) {
@@ -872,26 +973,17 @@
             const titleEl = document.getElementById('toastTitle');
             const descEl = document.getElementById('toastDesc');
             
-            titleEl.innerText = notificationsPool[index].title;
-            descEl.innerText = notificationsPool[index].desc;
-            
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 4500);
+            if(notificationsPool[index]){
+                titleEl.innerText = notificationsPool[index].title;
+                descEl.innerText = notificationsPool[index].desc;
+                toast.classList.add('show');
+                setTimeout(() => { toast.classList.remove('show'); }, 4000);
+            }
         }
 
-        setTimeout(() => { showNotification(0); }, 2000);
-        setTimeout(() => { showNotification(1); }, 12000);
+        setTimeout(() => { showNotification(0); }, 2500);
 
-        function openPrivacyModal() {
-            document.getElementById('privacyModal').style.display = 'flex';
-        }
-
-        function closePrivacyModal() {
-            document.getElementById('privacyModal').style.display = 'none';
-        }
-
+        // Filter categories logic
         function filterTools(category, event) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
@@ -906,48 +998,54 @@
             });
         }
 
-        function selectTool(toolName) {
-            const promptInput = document.getElementById('userPrompt');
-            promptInput.value = "Exécuter la tâche: " + toolName;
+        // Switching Bottom Navigation Tabs
+        function switchNavTab(element, pageId) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             
-            const workspace = document.getElementById('workspaceSection');
-            workspace.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            if (element) {
+                element.classList.add('active');
+            } else {
+                const targetNav = document.getElementById('nav-' + pageId);
+                if (targetNav) targetNav.classList.add('active');
+            }
+
+            document.querySelectorAll('.page-view').forEach(page => page.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
             
-            workspace.style.borderColor = 'var(--accent-color)';
-            setTimeout(() => {
-                workspace.style.borderColor = 'var(--border-color)';
-            }, 800);
+            // Reset scroll position to top when changing views
+            document.getElementById('appMainContainer').scrollTop = 0;
         }
 
-        function startNewProject() {
-            const promptInput = document.getElementById('userPrompt');
-            promptInput.value = "Nouveau Projet Studio Pro - ";
-            document.getElementById('workspaceSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            promptInput.focus();
+        // Open independent Generator Page
+        function openGeneratorPage(toolName) {
+            document.querySelectorAll('.page-view').forEach(page => page.classList.remove('active'));
+            document.getElementById('page-generator').classList.add('active');
+            
+            document.getElementById('currentToolTitle').innerText = "⚡ " + toolName;
+            document.getElementById('userPrompt').value = "";
+            document.getElementById('userPrompt').placeholder = "Entrez vos instructions pour " + toolName + "...";
+            document.getElementById('executionStatus').innerText = "";
+            
+            document.getElementById('appMainContainer').scrollTop = 0;
         }
 
+        // Run AI Demo Action
         function runAIExecution() {
             const prompt = document.getElementById('userPrompt').value;
             const status = document.getElementById('executionStatus');
             
             if(!prompt.trim()) {
-                alert("Veuillez entrer une description ou choisir un outil.");
+                alert("Veuillez entrer une description !");
                 return;
             }
 
-            const lowerPrompt = prompt.toLowerCase();
-            if(lowerPrompt.includes('illégal') || lowerPrompt.includes('violence')) {
-                status.style.color = '#ef4444';
-                status.innerText = "Erreur : Requête rejetée par les règles de sécurité de Google Play.";
-                return;
-            }
-
-            status.style.color = 'var(--success-color)';
-            status.innerText = "🔄 الذكاء الاصطناعي البسيط يعالج طلبك مجاناً...";
+            status.style.color = 'var(--accent-color)';
+            status.innerText = "🔄 الذكاء الاصطناعي يعالج طلبك الآن...";
             
             setTimeout(() => {
+                status.style.color = 'var(--success-color)';
                 status.innerText = "✅ تم بنجاح! الإخراج جاهز للتنزيل.";
-            }, 1500);
+            }, 1600);
         }
 
         function openProModal() {
@@ -956,14 +1054,6 @@
 
         function closeProModal() {
             document.getElementById('proModal').style.display = 'none';
-        }
-
-        function switchNavTab(element, pageId) {
-            document.querySelectorAll('.bottom-nav .nav-item').forEach(item => item.classList.remove('active'));
-            element.classList.add('active');
-
-            document.querySelectorAll('.page-view').forEach(page => page.classList.remove('active'));
-            document.getElementById('page-' + pageId).classList.add('active');
         }
     </script>
 </body>
